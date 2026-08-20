@@ -54,7 +54,8 @@ spec:
       name: Register
       action: catalog:register
       input:
-        catalogInfoUrl: "https://github.com/rakshay07-org/${{ parameters.component_id }}/blob/main/catalog-info.yaml"
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
 
   # some outputs which are saved along with the job for use in the frontend
   output:
