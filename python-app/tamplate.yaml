@@ -3,8 +3,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 # some metadata about the template itself
 metadata:
-  name: python-template2
-  title: Python flask template 2
+  name: python-template
+  title: Python flask template
   description: Provision a new Python Flask application
 spec:
   owner: development
@@ -21,7 +21,7 @@ spec:
           title: Component name
           type: string
           description: Provide a component name
-          pattern: '^[a-zA-Z0-9_-]+$'
+          pattern: '[a-zA-Z0-9]'
         environment:
           title: Environment
           type: string
