@@ -1,10 +1,10 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{value.app_name}}
+  name: ${{ values.app_name }}
   description: Python Application for demonstration purposes
   annotations:
-    github.com/project-slug: rakshay07-org/${{value.app_name}}
+    github.com/project-slug: rakshay07-org/${{ values.app_name }}
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
