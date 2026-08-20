@@ -1,0 +1,62 @@
+# Notice the v1beta3 version
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+# some metadata about the template itself
+metadata:
+  name: python-template
+  title: Python flask template
+  description: Provision a new Python Flask application
+spec:
+  owner: development
+  type: service
+
+  # these are the steps which are rendered in the frontend with the form input
+  parameters:
+    - title: Fill in some steps
+      required:
+        - component_id
+        - environment
+      properties:
+        component_id:
+          title: Component name
+          type: string
+          description: Provide a component name
+          pattern: '^[a-zA-Z0-9_-]+$'
+        environment:
+          title: Environment
+          type: string
+          description: Provide an environment name
+          enum:
+            - dev
+            - qa
+            - staging
+
+  # here's the steps that are executed in series in the scaffolder backend
+  steps:
+    - id: fetchBase
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./template
+        values:
+          name: ${{ parameters.component_id }}
+          owner: ${{ parameters.environment }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts:
+          - github.com
+        description: ${{ parameters.component_id }}
+        repoUrl: github.com/rakshay07-org/${{ parameters.component_id }}
+        protectDefaultBranch: false
+
+  # some outputs which are saved along with the job for use in the frontend
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
