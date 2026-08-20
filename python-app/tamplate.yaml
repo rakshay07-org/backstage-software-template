@@ -40,7 +40,7 @@ spec:
         url: ./template
         values:
           name: ${{ parameters.component_id }}
-          owner: ${{ parameters.environment }}
+          environment: ${{ parameters.environment }}
 
     - id: publish
       name: Publish
@@ -52,11 +52,15 @@ spec:
         repoUrl: github.com/rakshay07-org/${{ parameters.component_id }}
         protectDefaultBranch: false
 
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repositoryUrl: ${{ steps['publish'].output.repoContentUrl }}
+        catalogInfoPath: "./catalog-info.yaml"
+
   # some outputs which are saved along with the job for use in the frontend
   output:
     links:
       - title: Repository
         url: ${{ steps['publish'].output.remoteUrl }}
-      - title: Open in catalog
-        icon: catalog
-        entityRef: ${{ steps['register'].output.entityRef }}
